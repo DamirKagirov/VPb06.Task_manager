@@ -1,12 +1,11 @@
 """Вывод списка задач: команда /list и кнопка «Список задач»."""
 
-import html
-
 from aiogram import F, Router
 from aiogram.filters import Command, StateFilter
 from aiogram.types import Message
 
 from bot.database.db import get_tasks
+from bot.formatters import task_list_item
 from bot.keyboards.reply import BTN_LIST, main_menu
 
 router = Router(name="list_tasks")
@@ -25,12 +24,7 @@ def build_messages(tasks: list[dict]) -> list[str]:
     header = f"📋 <b>Задачи команды</b> (всего: {len(tasks)})"
 
     # Каждая задача превращается в отдельный блок текста.
-    blocks = []
-    for task in tasks:
-        blocks.append(
-            f"<b>#{task['id']}</b> {html.escape(str(task['text']))}\n"
-            f"   👤 {html.escape(str(task['user']))} · 🕒 {html.escape(str(task['created_at']))}"
-        )
+    blocks = [task_list_item(task) for task in tasks]
 
     messages: list[str] = []
     current = header
@@ -48,10 +42,16 @@ def build_messages(tasks: list[dict]) -> list[str]:
     if current:
         messages.append(current)
 
+    # Подсказка, как изменить категорию или статус.
+    if messages:
+        messages[-1] += (
+            "\n\n🛠 Изменить категорию или статус: <code>/edit 3</code>"
+        )
+
     return messages
 
 
-@router.message(Command("list"), StateFilter(None))
+@router.message(Command("list"))
 @router.message(F.text == BTN_LIST, StateFilter(None))
 async def cmd_list(message: Message) -> None:
     """Показывает все задачи из базы."""

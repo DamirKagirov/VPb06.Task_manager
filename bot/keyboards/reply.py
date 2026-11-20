@@ -5,6 +5,7 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 # Тексты кнопок храним в константах, чтобы не опечататься в обработчиках.
 BTN_ADD = "➕ Добавить задачу"
 BTN_LIST = "📋 Список задач"
+BTN_EDIT = "🛠 Изменить задачу"
 BTN_CSV = "📄 Скачать CSV"
 BTN_HELP = "❓ Помощь"
 BTN_CANCEL = "❌ Отмена"
@@ -14,7 +15,8 @@ def main_menu() -> ReplyKeyboardMarkup:
     """Главное меню с кнопками под полем ввода."""
     keyboard = [
         [KeyboardButton(text=BTN_ADD), KeyboardButton(text=BTN_LIST)],
-        [KeyboardButton(text=BTN_CSV), KeyboardButton(text=BTN_HELP)],
+        [KeyboardButton(text=BTN_EDIT), KeyboardButton(text=BTN_CSV)],
+        [KeyboardButton(text=BTN_HELP)],
     ]
 
     return ReplyKeyboardMarkup(

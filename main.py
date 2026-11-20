@@ -32,6 +32,7 @@ async def set_commands(bot: Bot) -> None:
         BotCommand(command="start", description="Запустить бота"),
         BotCommand(command="add", description="Добавить задачу"),
         BotCommand(command="list", description="Показать все задачи"),
+        BotCommand(command="edit", description="Изменить категорию или статус"),
         BotCommand(command="list_csv", description="Скачать задачи в CSV"),
         BotCommand(command="cancel", description="Отменить добавление"),
         BotCommand(command="help", description="Помощь"),

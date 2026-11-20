@@ -8,13 +8,14 @@
 
 from aiogram import Router
 
-from bot.handlers import add_task, list_csv, list_tasks, start
+from bot.handlers import add_task, edit_task, list_csv, list_tasks, start
 
 routers: list[Router] = [
     start.router,
     add_task.router,
     list_tasks.router,
     list_csv.router,
+    edit_task.router,
 ]
 
 __all__ = ["routers"]

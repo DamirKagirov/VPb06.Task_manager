@@ -7,6 +7,7 @@ from aiogram.filters import Command, CommandObject, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
+from bot.constants import DEFAULT_CATEGORY, DEFAULT_STATUS
 from bot.database.db import add_task
 from bot.keyboards.reply import BTN_ADD, cancel_keyboard, main_menu
 from bot.states.task import AddTask
@@ -66,7 +67,9 @@ async def save_and_reply(message: Message, state: FSMContext, task_text: str) ->
 
     await message.answer(
         f"✅ Задача <b>#{task_id}</b> добавлена:\n"
-        f"<i>{html.escape(task_text)}</i>",
+        f"<i>{html.escape(task_text)}</i>\n\n"
+        f"🏷 Категория: {DEFAULT_CATEGORY} · 🔄 Статус: {DEFAULT_STATUS}\n"
+        f"🛠 Изменить: <code>/edit {task_id}</code>",
         reply_markup=main_menu(),
     )
     return True
@@ -97,7 +100,7 @@ async def button_add(message: Message, state: FSMContext) -> None:
     await ask_for_text(message, state)
 
 
-@router.message(AddTask.waiting_for_text, F.text)
+@router.message(AddTask.waiting_for_text, F.text, ~F.text.startswith("/"))
 async def process_task_text(message: Message, state: FSMContext) -> None:
     """Пользователь прислал текст задачи — сохраняем его."""
     saved = await save_and_reply(message, state, message.text)
@@ -107,7 +110,7 @@ async def process_task_text(message: Message, state: FSMContext) -> None:
         await state.set_state(AddTask.waiting_for_text)
 
 
-@router.message(AddTask.waiting_for_text)
+@router.message(AddTask.waiting_for_text, ~F.text)
 async def process_not_text(message: Message) -> None:
     """Если вместо текста прислали фото/стикер — вежливо просим текст."""
     await message.answer("Пожалуйста, пришлите задачу обычным текстом ✍️")
