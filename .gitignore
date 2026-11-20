@@ -1,0 +1,38 @@
+# ===== Секреты =====
+# Токен бота и другие приватные настройки — никогда не коммитим.
+.env
+.env.*
+!.env.example
+
+# ===== База данных SQLite =====
+data/*.db
+data/*.db-journal
+data/*.sqlite
+data/*.sqlite3
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ===== Виртуальные окружения =====
+.venv/
+venv/
+env/
+
+# ===== Кэш инструментов и отчёты о тестах =====
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ===== Логи и временные файлы =====
+*.log
+*.tmp
+
+# ===== ОС и редакторы =====
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
